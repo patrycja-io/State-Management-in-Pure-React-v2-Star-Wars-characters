@@ -18,7 +18,11 @@ constructor(props) {
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
     this.reset = this.reset.bind(this);
+    this.updateDocumentTitle = this.updateDocumentTitle.bind(this);
 
+}
+updateDocumentTitle() {
+  document.title = this.state.count;
 }
 
 increment() {
@@ -26,20 +30,27 @@ increment() {
     (state, props) => {
       const { max, step } = props;
       if (state.count >= max) return;
-      return { count: this.state.count + step };
+      return ({ count: this.state.count + step }, this.updateDocumentTitle);
     },
-    () => storeStateInLocalStorage(this.state),
+      () => storeStateInLocalStorage(this.state),
   );
   console.log('Before!', this.state);
 }
 
 
 decrement() {
-  this.setState({count:this.state.count - 1 });
+  this.setState(
+    (state, props) => {
+      const { step } = props;
+      if (state.count <= 0) return;
+      return ({ count: this.state.count - step} , this.updateDocumentTitle);
+    },
+    () => storeStateInLocalStorage(this.state),
+  );
 }
 
 reset() {
-  this.setState({count:0});
+  this.setState({count:0}, this.updateDocumentTitle);
 }
   render() {
     const { count } = this.state;
