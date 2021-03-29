@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Counter = ( {max, step } ) => {
 const  [ count, setCount ] = React.useState(0);
 
 const increment = () => {
-  setCount(c =>{
+  setCount(c => {
     if (c >= max )return c;
     return c + step;
   }); 
@@ -12,6 +12,10 @@ const increment = () => {
 
 const decrement = () => setCount(count - 1);
 const reset = () => setCount(0);
+
+useEffect(() => {
+  document.title = `Counter: ${count}`;
+}, [count]);
 
     return (
       <main className="Counter">
