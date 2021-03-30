@@ -6,26 +6,35 @@ import NewGrudge from './NewGrudge';
 
 import initialState from './initialState';
 
+const GRUDGE_ADD = 'GRUDGE_ADD';
+const GRUDGE_FORGIVE = "GRUDGE_FORGIVE";
+
 const reducer = (state, action) => {
- return state; 
+ if (action.type === GRUDGE_ADD) {
+   return [action.payload, ...state ];
+ }
+ return state;
 };
 
 const Application = () => {
   const [grudges, dispatch ]= useReducer(reducer, initialState);
 
-  const addGrudge = grudge => {
-    grudge.id = id();
-    grudge.forgiven = false;
+  const addGrudge = ({ person, reason}) => {
+    dispatch({ 
+      type:GRUDGE_ADD,
+      payload: {
+        person, reason, 
+        forgiven:false, 
+        id:id()
+      }
+    });
+  }
 
-  };
-
-  const toggleForgiveness = id => {
-  };
 
   return (
     <div className="Application">
       <NewGrudge onSubmit={addGrudge} />
-      <Grudges grudges={grudges} onForgive={toggleForgiveness} />
+      <Grudges grudges={grudges}/>
     </div>
   );
 };
